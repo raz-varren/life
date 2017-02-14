@@ -24,7 +24,7 @@ func main() {
 	for{
 		e.Next()
 		e.PrintLife()
-		time.Sleep(time.Millisecond * 250)
+		time.Sleep(time.Millisecond * 100)
 		if e.Dead{
 			fmt.Println("Your environment has stagnated")
 			break

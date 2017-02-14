@@ -3,6 +3,7 @@ package life
 import(
 	"fmt"
 	"crypto/md5"
+	"bytes"
 )
 
 const(
@@ -74,19 +75,22 @@ func (e *Env) SetLivingCells(p ...Pos) {
 }
 
 func (e *Env) PrintLife() {
-	fmt.Printf("Generation: %d\n", e.Generation)
+	var buf bytes.Buffer
+	buf.WriteString(fmt.Sprintf("Generation: %d\n", e.Generation))
 	for y := 1; y <= e.Bounds.H; y++ {
 		for x := 1; x <= e.Bounds.W; x++ {
 			if x == 1{
-				fmt.Print(" ")
+				buf.WriteByte(' ')
 			}
 			
 			p := Pos{x, y}
-			fmt.Print(e.Cells[p], " ")
+			buf.WriteString(e.Cells[p].String())
+			buf.WriteByte(' ')
 		}
-		fmt.Print("\n")
+		buf.WriteByte('\n')
 	}
-	fmt.Println()
+	buf.WriteByte('\n')
+	fmt.Print(buf.String())
 }
 
 func (e *Env) Next() {

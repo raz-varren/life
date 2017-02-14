@@ -1,8 +1,10 @@
 package life
 
 const(
-	CharLive = string('\u2b1c')
-	CharDead = string('\u2b1b')
+	//CharLive = string('\u2b1c')
+	//CharDead = string('\u2b1b')
+	CharLive = "*"
+	CharDead = " "
 )
 
 type Cell struct {
