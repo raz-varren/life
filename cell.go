@@ -1,6 +1,6 @@
 package life
 
-const(
+const (
 	//CharLive = string('\u2b1c')
 	//CharDead = string('\u2b1b')
 	CharLive = "*"
@@ -8,8 +8,8 @@ const(
 )
 
 type Cell struct {
-	Pos Pos
-	Alive bool
+	Pos       Pos
+	Alive     bool
 	NextState State
 	Neighbors []*Cell
 }
@@ -28,18 +28,18 @@ func (c *Cell) init(e *Env) {
 
 func (c *Cell) CalcNextState() {
 	liveNeighbors := 0
-	for _, n := range c.Neighbors{
-		if n.Alive{
+	for _, n := range c.Neighbors {
+		if n.Alive {
 			liveNeighbors++
 		}
 	}
-	
-	if !c.Alive{
-		if liveNeighbors == 3{
+
+	if !c.Alive {
+		if liveNeighbors == 3 {
 			c.NextState = StateAlive
 		}
-	}else{
-		if liveNeighbors < 2 || liveNeighbors > 3{
+	} else {
+		if liveNeighbors < 2 || liveNeighbors > 3 {
 			c.NextState = StateDead
 		}
 	}
@@ -54,14 +54,14 @@ func (c *Cell) SetNextState() {
 	case StateDead:
 		c.Alive = false
 	}
-	
+
 	c.NextState = StateSame
 }
 
 func (c *Cell) String() string {
 	if c.Alive {
 		return CharLive
-	}else{
+	} else {
 		return CharDead
 	}
 }
