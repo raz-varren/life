@@ -2,7 +2,6 @@ package life
 
 import(
 	"fmt"
-	"crypto/md5"
 	"bytes"
 )
 
@@ -27,7 +26,7 @@ type Env struct {
 	Generation int64
 	Bounds Bounds
 	Cells map[Pos]*Cell
-	HashCache [][md5.Size]byte
+	HashCache []string
 }
 
 func NewEnv(bounds Bounds) *Env {
@@ -38,10 +37,10 @@ func NewEnv(bounds Bounds) *Env {
 		Cells: make(map[Pos]*Cell),
 		
 		//initialize these so they don't match
-		HashCache: [][md5.Size]byte{
-			md5.Sum([]byte("hello")),
-			md5.Sum([]byte("goodbye")),
-			md5.Sum([]byte("asshole")),
+		HashCache: []string{
+			"hello",
+			"goodbye",
+			"asshole",
 		},
 	}
 	
@@ -94,25 +93,23 @@ func (e *Env) PrintLife() {
 }
 
 func (e *Env) Next() {
-	generationSum := make([]byte, e.Bounds.W*e.Bounds.H)
 	for _, c := range e.Cells{
 		c.CalcNextState()
 	}
-	i := 0
+	var buf bytes.Buffer
 	for x := 1; x <= e.Bounds.W; x++{
 		for y := 1; y <= e.Bounds.H; y++{
 			c := e.Cells[Pos{x, y}]
 			c.SetNextState()
-			generationSum[i] = '0'
 			if c.Alive{
-				generationSum[i] = '1'
+				buf.WriteByte('1')
+			}else{
+				buf.WriteByte('0')
 			}
-			i++
 		}
 	}
 	
-	sum := md5.Sum(generationSum)
-	setSum(e.HashCache, sum)
+	setSum(e.HashCache, buf.String())
 	e.Dead = checkSums(e.HashCache)
 	
 	e.Generation++
@@ -153,13 +150,13 @@ func (p Pos) Neighbor(xDir, yDir int, b Bounds) Pos {
 	return Pos{x,y}
 }
 
-func setSum(sums [][md5.Size]byte, newSum [md5.Size]byte){
+func setSum(sums []string, newSum string){
 	sums[0] = sums[1]
 	sums[1] = sums[2]
 	sums[2] = newSum
 }
 
-func checkSums(sums [][md5.Size]byte) bool {
+func checkSums(sums []string) bool {
 	matches := 0
 	
 	if sums[0] == sums[1]{
