@@ -16,14 +16,16 @@ type Cell struct {
 
 func (c *Cell) init(e *Env) {
 	p := c.Pos
-	c.Neighbors[0] = e.Cells[p.Neighbor(0, 1, e.Bounds)]
-	c.Neighbors[1] = e.Cells[p.Neighbor(1, 1, e.Bounds)]
-	c.Neighbors[2] = e.Cells[p.Neighbor(1, 0, e.Bounds)]
-	c.Neighbors[3] = e.Cells[p.Neighbor(1, -1, e.Bounds)]
-	c.Neighbors[4] = e.Cells[p.Neighbor(0, -1, e.Bounds)]
-	c.Neighbors[5] = e.Cells[p.Neighbor(-1, -1, e.Bounds)]
-	c.Neighbors[6] = e.Cells[p.Neighbor(-1, 0, e.Bounds)]
-	c.Neighbors[7] = e.Cells[p.Neighbor(-1, 1, e.Bounds)]
+	i := 0
+	for x := -1; x <= 1; x++ {
+		for y := -1; y <= 1; y++ {
+			if x == 0 && y == 0 {
+				continue
+			}
+			c.Neighbors[i] = e.Cells[p.Neighbor(x, y, e.Bounds)]
+			i++
+		}
+	}
 }
 
 func (c *Cell) CalcNextState() {

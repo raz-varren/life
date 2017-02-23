@@ -151,23 +151,23 @@ func (p Pos) Neighbor(xDir, yDir int, b Bounds) Pos {
 }
 
 func setSum(sums []string, newSum string) {
-	sums[0] = sums[1]
-	sums[1] = sums[2]
-	sums[2] = newSum
+	for i, iLen := 0, len(sums); i < iLen; i++ {
+		if i == iLen-1 {
+			sums[i] = newSum
+			return
+		}
+		sums[i] = sums[i+1]
+	}
 }
 
 func checkSums(sums []string) bool {
-	matches := 0
-
-	if sums[0] == sums[1] {
-		matches++
+	for k1, v1 := range sums {
+		for k2, sLen := k1+1, len(sums); k2 < sLen; k2++ {
+			v2 := sums[k2]
+			if v1 == v2 {
+				return true
+			}
+		}
 	}
-	if sums[0] == sums[2] {
-		matches++
-	}
-	if sums[1] == sums[2] {
-		matches++
-	}
-
-	return matches >= 1
+	return false
 }

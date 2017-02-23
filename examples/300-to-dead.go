@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/raz-varren/life"
+	"os"
+	"os/exec"
 	"time"
 )
 
@@ -23,6 +25,7 @@ func main() {
 
 	for {
 		e.Next()
+		clear()
 		e.PrintLife()
 		time.Sleep(time.Millisecond * 100)
 		if e.Dead {
@@ -30,4 +33,10 @@ func main() {
 			break
 		}
 	}
+}
+
+func clear() {
+	cmd := exec.Command("clear")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
 }
